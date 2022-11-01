@@ -10,6 +10,9 @@ import GetCookie from "../hooks/getCookie";
 import SetCookie from "../hooks/setCookie";
 import RemoveCookie from "../hooks/removeCookie";
 import { useNavigate } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 const Collections = () => {
   const [visible, setVisible] = useState(false);
   const [collection, setCollection] = useState([]);
@@ -50,7 +53,10 @@ const Collections = () => {
     setVisible(false);
     createCollection();
     reset();
+    createCol();
   };
+  const createCol = () => toast.success("Collection created");
+  const deleteCol = () => toast.warn("Collection deleted");
   const show = () => {
     setVisible(true);
   };
@@ -61,25 +67,39 @@ const Collections = () => {
   const deleteCollection = async (collectionId) => {
     await axios.delete(`${URL}/collections/${collectionId}`);
     setCheckChange(checkChange ? false : true);
+    deleteCol();
   };
 
   return (
     <div className="collection">
-      <button
-        className="btn btn-primary d-flex align-items-center gap-2"
-        onClick={() => {
-          navigate(-1);
-        }}
-      >
-        <i className="bi bi-skip-backward-circle"></i> Back
-      </button>
+      <ToastContainer
+        position="top-center"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
+      <div className="d-flex justify-content-between">
+        <h3>Your Collections</h3>
+        <button
+          className="btn btn-primary d-flex align-items-center gap-2"
+          onClick={() => {
+            navigate(-1);
+          }}
+        >
+          <i className="bi bi-skip-backward-circle"></i> Back
+        </button>
+      </div>
       <div className="collections">
         <div className="ui card">
           <div className="content">
             <div className="header">Collection</div>
-            <div className="description">
-              O'zingizga kerakli kolleksiya yarating
-            </div>
+            <div className="description">Create collection</div>
           </div>
           <div className="ui bottom attached button" onClick={show}>
             <i className="add icon"></i>
@@ -87,7 +107,7 @@ const Collections = () => {
           </div>
           <Rodal height={280} visible={visible} onClose={hide}>
             <div style={{ marginBottom: "20px" }}>Create Collection</div>
-            <form onSubmit={handleSubmit(onSubmit)}>
+            <form className="login_form" onSubmit={handleSubmit(onSubmit)}>
               <input
                 type="text"
                 placeholder="Collection Name"

@@ -27,7 +27,7 @@ const Register = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      const { data } = await axios.post(
+      const data = await axios.post(
         `${URL}/register`,
         {
           ...values,

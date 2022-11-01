@@ -2,6 +2,8 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import Rodal from "rodal";
 import { URL } from "../API";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import "./pagestyle/home.scss";
 import "rodal/lib/rodal.css";
 
@@ -24,18 +26,25 @@ const Home = () => {
 
   const addComment = (id) => {
     const createComment = async () => {
-      const result = await axios.post(`${URL}/comments`, {
+      await axios.post(`${URL}/comments`, {
         itemId: id,
         comment: commentText,
         userName: localStorage.getItem("currentUserName"),
         userId: localStorage.getItem("currentUserId"),
       });
-      console.log(result);
+      notifySuccess();
     };
-    createComment();
+    if (localStorage.getItem("currentUserId")) {
+      createComment();
+    } else {
+      notifyError();
+    }
     setCommentText("");
     setCheckEvent(checkEvent ? false : true);
   };
+  const notifyError = () =>
+    toast.error("You cannot comment because you are not registered");
+  const notifySuccess = () => toast.success("Comment saved");
   const getComments = async (itemId) => {
     const user_post = items.filter((val) => val._id === itemId);
     setItem(user_post);
@@ -52,6 +61,18 @@ const Home = () => {
   };
   return (
     <div className="home">
+      <ToastContainer
+        position="top-center"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
       <div className="contents">
         {items?.map((item) => {
           return (

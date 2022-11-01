@@ -2,8 +2,9 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, NavLink } from "react-router-dom";
 import { URL } from "../API";
 import axios from "axios";
-import "./sass/header.scss";
 import RemoveCookie from "../hooks/removeCookie";
+
+import "./sass/header.scss";
 
 const Header = (props) => {
   const navigate = useNavigate();
@@ -29,7 +30,7 @@ const Header = (props) => {
   const logOut = () => {
     RemoveCookie("jwt");
     localStorage.removeItem("currentUserId");
-    localStorage.removeItem('currentUserName');
+    localStorage.removeItem("currentUserName");
     navigate("/");
     setCheckUser(false);
   };
@@ -39,8 +40,8 @@ const Header = (props) => {
 
       <div className="ui search">
         <div className="ui icon input">
-          <input className="prompt" type="text" placeholder="Search..." />
-          <i className="search icon"></i>
+          {/* <input className="prompt" type="text" placeholder="Search..." />
+          <i className="search icon"></i> */}
         </div>
         <div className="results"></div>
       </div>

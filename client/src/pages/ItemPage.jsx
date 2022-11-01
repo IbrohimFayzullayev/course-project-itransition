@@ -5,12 +5,14 @@ import { useForm } from "react-hook-form";
 import { URL } from "../API";
 import GetCookie from "../hooks/getCookie";
 import { useNavigate } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import "./pagestyle/item.scss";
 
 const ItemPage = () => {
   const [items, setItems] = useState([]);
   const [visible, setVisible] = useState(false);
-  const [checkChange, setCheckChange] = useState(false);
+  const [checkChange, setCheckChange] = useState(true);
   const [colName, setColName] = useState("");
 
   const navigate = useNavigate();
@@ -34,6 +36,7 @@ const ItemPage = () => {
     reset,
     formState: { errors },
   } = useForm();
+
   const onSubmit = (data) => {
     const token = GetCookie("jwt");
     const colId = GetCookie("collectionId");
@@ -51,12 +54,15 @@ const ItemPage = () => {
         }
       );
     };
-    createItem();
-    setVisible(false);
     setCheckChange(checkChange ? false : true);
+    setVisible(false);
+    createItem();
     reset();
+    createCol();
   };
 
+  const createCol = () => toast.success("Item created");
+  const deleteCol = () => toast.warn("Item deleted");
   const show = () => {
     setVisible(true);
   };
@@ -66,9 +72,22 @@ const ItemPage = () => {
   const deleteItem = async (itemId) => {
     await axios.delete(`${URL}/items/${itemId}`);
     setCheckChange(checkChange ? false : true);
+    deleteCol();
   };
   return (
     <div className="items">
+      <ToastContainer
+        position="top-center"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
       <div className="d-flex justify-content-between collection__top">
         <h2>Collection: {colName}</h2>
         <button
@@ -84,15 +103,15 @@ const ItemPage = () => {
         <div className="ui card">
           <div className="content">
             <div className="header">Item</div>
-            <div className="description">Item yarating</div>
+            <div className="description">Create Item</div>
           </div>
           <div className="ui bottom attached button" onClick={show}>
             <i className="add icon"></i>
-            Create Collection
+            Create Item
           </div>
           <Rodal height={280} visible={visible} onClose={hide}>
             <div style={{ marginBottom: "20px" }}>Create Item</div>
-            <form onSubmit={handleSubmit(onSubmit)}>
+            <form className="login_form" onSubmit={handleSubmit(onSubmit)}>
               <input
                 type="text"
                 placeholder="Item Name"

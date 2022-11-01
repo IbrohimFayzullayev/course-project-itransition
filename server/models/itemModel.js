@@ -4,7 +4,6 @@ const ItemSchema = mongoose.Schema({
   name: {
     type: String,
     required: [true, "Name is required"],
-    minlength: [5, "name must be at least 5 characters"],
     maxlength: [40, "name must be at most 40 characters"],
   },
   description: {

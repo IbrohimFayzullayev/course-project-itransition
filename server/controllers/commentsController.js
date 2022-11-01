@@ -27,9 +27,10 @@ exports.createComment = async (req, res) => {
     console.log(upt);
     res.status(200).json({ status: "success", created: true });
   } catch (error) {
+    console.log(error._message);
     res.status(404).json({
       status: "fail",
-      message: error,
+      message: error._message,
     });
   }
 };
