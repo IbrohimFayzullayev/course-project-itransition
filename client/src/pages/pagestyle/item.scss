@@ -1,0 +1,18 @@
+.items {
+  .collection__top {
+    margin-top: 10px;
+  }
+  .collections {
+    margin-top: 20px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+
+    align-items: center;
+    row-gap: 30px;
+
+    .card {
+      margin: 0;
+      padding: 0;
+    }
+  }
+}

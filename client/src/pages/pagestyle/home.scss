@@ -1,0 +1,11 @@
+.home {
+  margin-top: 40px;
+  .contents {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+
+    .item_card {
+      margin: 0;
+    }
+  }
+}
